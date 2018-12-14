@@ -21,3 +21,12 @@ VALUES ('Burgers', 'food', 'fast food', 4.99, 10);
 
 INSERT INTO products (product_name, product_kind, department_name, price, stock_quantity)
 VALUES ('Coke', 'drinks', 'beverages', 0.99, 100);
+
+INSERT INTO products (product_name, product_kind, department_name, price, stock_quantity)
+VALUES ('F-35 Lightningh', 'Military Hardware', 'Armory', 3200000000000, 16);
+
+INSERT INTO products (product_name, product_kind, department_name, price, stock_quantity)
+VALUES ('Mona Lisa ', 'Priceless Art', 'Black Market Art Deals', 60000000, 1);
+
+INSERT INTO products (product_name, product_kind, department_name, price, stock_quantity)
+VALUES ('Coke', 'amphetamine', 'Drugs', 200, 100);

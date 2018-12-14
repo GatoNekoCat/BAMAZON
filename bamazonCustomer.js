@@ -1,6 +1,7 @@
 var inquirer = require('inquirer');
 var Table = require('cli-table');
 var mysql = require('mysql');
+var colors = require('colors');
 
 var recordKeeping = [];
 
@@ -44,17 +45,19 @@ function itemForSale() {
         }
 
         console.log(table.toString());
+        buyItem();
     });
     
 
 };
-
+//The function to handle the purchasing of items from our database
 function buyItem() {
+    //inquirer will find out what item the customer wants to purchase and how many.
     inquirer.prompt([
         {
             type: 'input',
-            messasge: 'Which item would you like to purchase? (please enter Item ID#)',
-            name: 'item'
+            name: 'item',
+            message: "'Which item would you like to purchase?'"
         }, 
         {
             type: 'input',
@@ -62,6 +65,41 @@ function buyItem() {
             name: 'quantity'
         }
     ]).then(function(response){
-        
+        // query our database
+        const query = "SELECT * FROM products where item_id = ?";
+        connection.query(query, response.item, function(err,res){
+            if (res.length > 0){
+                //check if there is enough quantity of product in stock
+                if(response.quantity > res[0].stock_quantity){
+                    console.log('\r\n');
+                    console.log("We are unable to fufill your request at this time, please check back later.");
+                    setTimeout(function(){buyItem()}, 2000);
+                    
+                } else {
+                    recordKeeping.push(res, parseInt(response.quantity));
+                    databaseUpdate.push(res[0].item_id, (parseInt(res[0].stock_quantity) - parseInt(response.quantity)));
+                    console.log('\r\n');
+                    for (i=0;i<recordKeeping.length;i+=2){
+                        total += (recordKeeping[i][0].price * recordKeeping[i+1]);
+                    }
+                    checkOut();
+                }                
+            }
+            else {
+                console.log('\r\n');
+                console.log('This item is not in our inventory.');
+                setTimeout(function(){buyItem()},2000);
+            }
+        })
+        let buyQuantity =  parseInt(response.quantity);
+
+        console.log(stock);
+
     });
+};
+
+function checkOut () {
+    
 }
+
+
