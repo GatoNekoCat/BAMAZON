@@ -84,6 +84,7 @@ function buyItem() {
                     setTimeout(function () { buyItem() }, 2000);
 
                 } else {
+                    shoppingCart.push([res[0].item_id, res[0].product_name, res[0].price, response.quantity]);
                     recordKeeping.push(res, parseInt(response.quantity));
                     databaseUpdate.push(res[0].item_id, (parseInt(res[0].stock_quantity) - parseInt(response.quantity)));
                     console.log('\r\n');
@@ -107,7 +108,9 @@ function buyItem() {
 };
 
 function checkOut() {
-    console.log(recordKeeping);
+
+    
+    console.log(shoppingCart.toString());
 
     inquirer.prompt({
         name: 'choice',
